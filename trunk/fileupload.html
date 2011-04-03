@@ -1,0 +1,28 @@
+<!DCOTYPE html>
+<script type="text/javascript">
+function handleFile(file) {
+  var reader=new FileReader();
+  reader.onloadend=(function(cFile) {
+    return function(e) { processFile(cFile.name,encodeURIComponent(e.target.result)); }
+  })(file);
+  reader.readAsText(file);
+}
+function getFile(url) {
+  var xhr=new XMLHttpRequest();
+  xhr.open("GET",url,true);
+  xhr.onreadystatechange=function() {
+    if(xhr.readyState==4) {
+      processFile(undefined,encodeURIComponent(xhr.responseText);
+    }
+  }
+}
+function processFile(name,data) {
+}
+</script>
+Upload an Open Web app manifest<br />
+<ul>
+<li id="draganddrop">from your computer: (upload or drag and drop)
+  <input type="file" id="fileElem" onchange="handleFile(this.files[0])" /></li>
+<li>from the internet:
+  <input type="url" id="urlElem" onchange="getFile(this.value)" /></li>
+</ul>
