@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<link rel="chrome-application-definition" href="manifest%20(2).json">
+<script type="text/javascript" src="converter.js"></script>
+<script type="Text/javascript">
+function c() {
+  var a=document.getElementById("textarea");
+  a.value=convertWebApp(a.value);
+}
+</script>
+<textarea rows="20" cols="100" id="textarea"></textarea>
+<input type="button" value="Test" onclick="c()" />
+<input type="button" value="Download .crx file" onclick="d()" />
