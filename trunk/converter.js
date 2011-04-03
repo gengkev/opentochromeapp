@@ -13,8 +13,8 @@ function convertWebApp(string,origin) {
       }
     }
   }
-  chromeWebApp.name=openWebApp.name; 			//required by both
-  //validate chrome version					//required by chrome, no limit owa
+  chromeWebApp.name=openWebApp.name;  //required by both
+  //validate chrome version required by chrome, no limit open
   chromeWebApp.version="";
   if (openWebApp.version) {
     var ints=openWebApp.version.split(".",4);
@@ -28,13 +28,13 @@ function convertWebApp(string,origin) {
     });
   }
   else chromeWebApp.version="0";
-  chromeWebApp.app={};					//required by chrome
-  chromeWebApp.app.launch={};				//required by chrome
+  chromeWebApp.app={};  //required by chrome
+  chromeWebApp.app.launch={};  //required by chrome
   if (openWebApp.launch_path) {
-    chromeWebApp.launch.web_url=openWebApp.launch_path;//required by chrome
+    chromeWebApp.launch.web_url=openWebApp.launch_path; //required by chrome
   }
-  else { chromeWebApp.launch_url=origin; }		//"origin" of manifest, owa says
-  if (openWebApp.installs_allowed_from) {			//not exactly the same....
+  else { chromeWebApp.launch_url=origin; } //"origin" of manifest, owa says
+  if (openWebApp.installs_allowed_from) { //not exactly the same.... part of the app, and can install/update app
     chromeWebApp.app.urls=openWebApp.installs_allowed_from;
   }
 
@@ -50,6 +50,8 @@ function convertWebApp(string,origin) {
   return JSON.stringify(chromeWebApp);
 }
 JZip.compressions.crx={
+  //hmm
 }
 function downloadChromeApp(JSON,type) {
+}
   
