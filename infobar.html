@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<style type="text/css">
+html {
+  font-size:24px;
+}
+.appName {
+  
+}
+#prompt {
+  display:block;
+}
+#install {
+  display:none;
+}
+.right {
+  text-align:right;
+}
+.progress {
+  width:25%;
+  -webkit-transition:0.5s ease-in;
+}
+</style>
+<script type="text/javascript">
+function install() {
+  document.getElementById("prompt").style.display="none";
+  document.getElementById("install").style.display="block";
+  document.getElementById("progress").value="0";
+  window.i=0;
+  window.interval=setInterval(function() {
+    if (i>100) clearInterval(interval);
+    document.getElementById("progress").value=parseInt(document.getElementById("progress").value)+1;
+    i++;
+  },100);
+}
+function no() {
+  window.close();
+}
+
+</script>
+
+<body>
+<div id="prompt">
+  This page wants to install the Open Web App <span class="appName"></span>.
+  Would you like to install it?
+  <button onclick="install()" class="right">Yes</button>
+  <button onclick="window.close()" class="right">No</button>
+</div>
+<div id="install">
+  Installing <span class="appName"></span>...
+  <progress id="progress" max="100" class="right" style="width:25%;"></progress>
+  <button onclick="cancelInstall()" class="right">Cancel</button>
+</div>
+</body>

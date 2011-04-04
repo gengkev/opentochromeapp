@@ -3,20 +3,23 @@
   "version": "0.1",
   "description": "Converts Open Web Apps to Chrome Web Apps in Windows",
   // "icons": { ... },
-  "default_locale": "en",
+  // "default_locale": "en",
 
   "background_page": "background.html",
-  "content_scripts": [ {
-    "matches": ["http://*/*", "https://*/*"],
-    "all_frames": "true",
-    "js": "inject.js",
-    "run_at": "document_start"
-  } ],
+  //"content_scripts": [ {   // inject open web app stuff
+  //  "matches": ["http://*/*", "https://*/*"],
+  //  "all_frames": true,
+  //  "js": "inject.js",
+  //  "run_at": "document_start"
+  //} ],
   
   // "homepage_url": "http://path/to/homepage",
-  "omnibox": { "keyword" : "app" }
-  // "options_page": "aFile.html",
-  "permissions": ["management"],
-  // "plugins": [...],
+  "omnibox": { "keyword" : "app" },
+  // "options_page": "options.html",
+  "permissions": [
+    "management",
+    "experimental", //infobar
+    "tabs"
+  ]
   // "update_url": "http://path/to/updateInfo.xml"
 }
