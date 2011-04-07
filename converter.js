@@ -49,9 +49,6 @@ function convertWebApp(string,origin) {
 
   return JSON.stringify(chromeWebApp);
 }
-JZip.compressions.crx={
-  //hmm
-}
 function downloadChromeApp(JSON,type) {
 }
   
