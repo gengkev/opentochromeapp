@@ -49,6 +49,30 @@ function convertWebApp(string,origin) {
 
   return JSON.stringify(chromeWebApp);
 }
-function downloadChromeApp(JSON,type) {
+function compileZipFile(manifest,langs,messages) { //langs: array of folders, messages: array of messages.json
+  if (langs&&langs.length!=messages.length)
+    throw new Error("Length of languages is not equal to length of messages!");
+  var zip=new JSZip();
+  zip.add("manifest.json",manifest,{base64:true});
+  if (langs) {
+    var locales=zip.folder("_locales");
+    for (i=0;i<langs.length;i++) {
+      locales.folder(langs[i]).add("messages.json",messages[i],{base64:true});
+    }
+  }
+  return zip.generate();
+}
+function getRSA(zipfile) {
+  var rsa=new RSAKey();
+  rsa.generate(1024,10001);
+  var pubKey="-----BEGIN CERTIFICATE-----"
+    +rsa.n.toString(16)
+    +"-----END CERTIFICATE-----";
+  var privateKey="-----BEGIN RSA PRIVATE KEY-----"
+    +rsa.d.toString(16)
+    +"-----END RSA PRIVATE KEY-----";
+  //rsa.readPrivateKeyFromPEMString(privateKey);
+  var sig=rsa.signString(zipfile,"sha1");
+  return [pubKey,sig];
 }
   
