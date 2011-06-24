@@ -2,53 +2,145 @@
 
 <style type="text/css">
 html {
-  font-size:24px;
+  font-size:20px;
+  font-family:Arial;
 }
 .appName {
-  
+  font-weight:bold;
+  border:1px dotted grey;
+  padding:5px;
+  background-color:#EEE;
 }
-#prompt {
-  display:block;
-}
-#install {
+#prompt, #install, #waiting {
   display:none;
 }
-.right {
-  text-align:right;
+#init, #prompt, #install, #waiting {
+  float:left;
 }
-.progress {
-  width:25%;
+progress {
+  float:left;
+  width:20%;
   -webkit-transition:0.5s ease-in;
+  margin:2px 10px;
+}
+#percent {
+  width:40px;
+  font-size:16px;
+  color:#AAA;
+  float:left;
+  text-align:right;
+  display:inline-block;
+}
+button {
+  background-color:yellow;
+}
+#info {
+  font-size:16px;
+  color:#AAA;
+  display:inline-block;
+  width:120px;
+  margin:0px 10px;
 }
 </style>
 <script type="text/javascript">
-function install() {
-  document.getElementById("prompt").style.display="none";
-  document.getElementById("install").style.display="block";
-  document.getElementById("progress").value="0";
-  window.i=0;
-  window.interval=setInterval(function() {
-    if (i>100) clearInterval(interval);
-    document.getElementById("progress").value=parseInt(document.getElementById("progress").value)+1;
-    i++;
-  },100);
-}
-function no() {
-  window.close();
+//var port=chrome.extension.connect({name:"infobar"});
+window.addEventListener("load",function(){
+//  port.postMessage({name:"ready"});
+
+  //wont be like this: we have to wait for name first
+  toggleVisible("init",false,"prompt");
+},false);
+
+window.requestAnimationFrame=
+  window.requestAnimationFrame||
+  window.webkitRequestAnimationFrame||
+  window.mozRequestAnimationFrame||
+  window.oRequestAnimationFrame||
+  window.msRequestAnimationFrame||
+  function(callback) {
+    setTimeout(function(){
+      callback(+new Date());
+    },16);
+  };
+
+
+function step(time) {
+  var progress=time-start;
+  $("progress").value=progress/100;
+  $("percent").innerText=Math.round(progress/100)+"%";
+  if (progress<10000) {
+    window.requestAnimationFrame(step);
+  }
+  else {
+    waitForUser();
+  }
+  if (progress%4000<2000) {
+    $("info").innerText="Doing that";
+  }
+  else {
+    $("info").innerText="Doing this";
+  }
 }
 
+function install() {
+  toggleVisible("prompt",false,"install");
+  document.getElementById("progress").value="0";
+  window.i=0;
+
+  window.start=+new Date();
+  window.requestAnimationFrame(step);
+/*
+  window.interval=setInterval(function() {
+    if (i==100) { clearInterval(interval); waitForUser(); }
+    else {
+      $("progress").value=parseInt($("progress").value)+1;
+      $("percent").innerText=parseInt($("progress").value)+1+"%";
+      i++;
+    }
+    if (i%40==20) {
+      $("info").innerText="Doing that";
+    }
+    else if (i%40==0) {
+      $("info").innerText="Doing this";
+    }
+  },100);
+*/
+}
+function waitForUser() {
+  toggleVisible("install",false,"waiting");
+  //setTimeout(function(){
+  //  $("progress").removeAttribute("value");
+  //},0);
+}
+
+
+function $(el) {
+  return document.getElementById(el);
+}
+function toggleVisible(el,bool,el2) {
+  $(el).style.display=(!!bool)?"block":"none";
+  (el2)?toggleVisible(el2,!bool):null;
+}
 </script>
 
 <body>
+<span id="percent">0%</span>
+<progress id="progress" min="0" max="100"></progress> 
+<div id="init">
+  <span class="right">Please wait, loading...</span>
+</div>
 <div id="prompt">
-  This page wants to install the Open Web App <span class="appName"></span>.
-  Would you like to install it?
-  <button onclick="install()" class="right">Yes</button>
-  <button onclick="window.close()" class="right">No</button>
+  Do you want to install the Open Web App <span class="appName">Sample App</span>?
+
+    <button onclick="install()">Yes</button>
+    <button onclick="cancelInstall()">No</button>
 </div>
 <div id="install">
-  Installing <span class="appName"></span>...
-  <progress id="progress" max="100" class="right" style="width:25%;"></progress>
-  <button onclick="cancelInstall()" class="right">Cancel</button>
+  Installing <span class="appName">Sample App</span>...
+  <span id="info">loading</span>
+  <button onclick="cancelInstall()">Cancel</button>
+</div>
+<div id="waiting">
+  Waiting for the user to accept installation...
 </div>
 </body>
