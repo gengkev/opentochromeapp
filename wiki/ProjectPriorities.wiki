@@ -6,6 +6,7 @@ Main things
     * Chrome message passing mostly, and DOM hacks like Mozilla for webpage owa api and maybe postMessage for communication to generator
     * It's hard to find a balance between sync and async
     * Which makes it hard to install two apps at once :o
+    * Actually right now i'm going to put the generator in the infobar to save a lot of message passing :D
   * Implement the OWA Api for webpages, messing with content scripts, and passing to bg page.
   * Implement CRX generation (namely RSA) correctly.
   * Implement apps management
