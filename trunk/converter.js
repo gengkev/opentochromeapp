@@ -47,6 +47,7 @@ function convertWebApp(string,origin) {
       if (!openWebApp.locales.hasOwnProperty(i)) continue;
       locales[i]=convertWebApp(openWebApp.locales[i],origin,true)[0];
     }
+    return [JSON.stringify(chromeWebApp),locales];
   }
 
   //Option 1: The Easy One
@@ -55,9 +56,9 @@ function convertWebApp(string,origin) {
     if (_openWebApp.locales) delete _openWebApp.locales;
     if (_openWebApp.default_locale) delete _openWebApp.default_locale;
     chromeWebApp=convertManifest(openWebApp,origin);
+    return [JSON.stringify(chromeWebApp)];
   }
 
-  return JSON.stringify(chromeWebApp);
 }
 
 function convertManifest(input) {
@@ -95,7 +96,7 @@ function convertManifest(input) {
     chromeWebApp.launch.web_url=openWebApp.launch_path; //required by chrome
   }
   else if (origin) { //"origin" of manifest, owa says.. hmm
-    chromeWebApp.launch_url=origin;
+    chromeWebApp.launch.web_url=origin;
   }
   else {
     throw new Error("Manifest did not have an origin field, "
@@ -150,6 +151,6 @@ function getRSA(zipfile) {
 function compileFinalCRX(zipfile,pubKey,sig) {
   var headerdata=
     "\x43\x72\x32\x34"+
-    "\x02\x00\x00\x00"+
+    "\x02\x00\x00\x00"
     
 }

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
+<!--
+
+All of this is going into the progress bar...for now
+
+-->
+
 <script type="text/javascript">
-var port=chrome.extension.connect({name:"converter"});
 
 (function(){
   //load all of the libraries, and converter.js, a library for making this code look a lot less un-cluttered
@@ -15,7 +20,9 @@ var port=chrome.extension.connect({name:"converter"});
     x.parentNode.insertBefore(s, x);
   });
 })();
+
 window.onload=function(){
+  window.opener.ready();
   port.postMessage({name:"progress",message:1});
   port.postMessage({name:"update",message:"dataready"});
 }
