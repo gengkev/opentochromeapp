@@ -3,7 +3,7 @@
   "version": "0.1",
   "description": "Converts Open Web Apps to Chrome Web Apps in Windows",
   // "icons": { ... },
-  // "default_locale": "en",
+  "default_locale": "en",
 
   "background_page": "background.html",
   //"content_scripts": [ {   // inject open web app stuff
@@ -13,9 +13,9 @@
   //  "run_at": "document_start"
   //} ],
   
-  // "homepage_url": "http://path/to/homepage",
-  "omnibox": { "keyword" : "app" },
-  // "options_page": "options.html",
+  "homepage_url": "https://code.google.com/p/opentochromeapp/",
+  // "omnibox": { "keyword" : "app" }, //Omnibox is implemented natively for Chrome Apps though it's slow
+  // "options_page": "options.html", //Later.
   "permissions": [
     "management",
     "experimental", //infobar

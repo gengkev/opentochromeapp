@@ -2,8 +2,8 @@
 
 <style type="text/css">
 html {
-  font-size:20px;
-  font-family:Arial;
+  margin-top:10px;
+  padding-top:10px;
 }
 .appName {
   font-weight:bold;
@@ -25,32 +25,49 @@ progress {
 }
 #percent {
   width:40px;
-  font-size:16px;
   color:#AAA;
   float:left;
   text-align:right;
   display:inline-block;
 }
 button {
-  background-color:yellow;
+  /* background-color:yellow; */
 }
 #info {
-  font-size:16px;
-  color:#AAA;
+  color:#888;
   display:inline-block;
   width:120px;
   margin:0px 10px;
 }
 </style>
 <script type="text/javascript">
-//var port=chrome.extension.connect({name:"infobar"});
+var appName="",appManifest="",origin="";
+var port=chrome.extension.connect({name:"infobar"});
 window.addEventListener("load",function(){
-//  port.postMessage({name:"ready"});
+  port.postMessage({name:"givemethatfish"});
 
-  //wont be like this: we have to wait for name first
-  toggleVisible("init",false,"prompt");
+  port.onMessage.addListener(function(msg){
+    switch(msg.name) {
+      case "ready":
+        if (!(msg.appName&&msg.appManifest&&msg.origin)) 
+          throw new Error("App name, manifest, or origin not provided!");
+        appName=msg.appName;appManifest=msg.appManifest;origin=msg.origin;
+        document.getElementsByClassName("appName").forEach(function(e,i,a) {
+          ((x=e.innerText)?x:e.innerHTML)=document.encodeURI(appName);
+        });
+        toggleVisible("init",false,"prompt");
+        break;
+      case "appInstalled":
+        break;
+      default:
+        break;
+    }
+  });
 },false);
 
+//What a waste of time - a sim :)
+
+/*
 window.requestAnimationFrame=
   window.requestAnimationFrame||
   window.webkitRequestAnimationFrame||
@@ -67,11 +84,13 @@ window.requestAnimationFrame=
 function step(time) {
   var progress=time-start;
   $("progress").value=progress/100;
-  $("percent").innerText=Math.round(progress/100)+"%";
+  $("percent").innerHTML=Math.round(progress/100)+"%";
   if (progress<10000) {
     window.requestAnimationFrame(step);
   }
   else {
+    $("progress").value=100;
+    $("percent").innerHTML=100+"%";
     waitForUser();
   }
   if (progress%4000<2000) {
@@ -81,15 +100,17 @@ function step(time) {
     $("info").innerText="Doing this";
   }
 }
-
+*/
 function install() {
+  port.postMessage({name:"startInstall"});
+
   toggleVisible("prompt",false,"install");
   document.getElementById("progress").value="0";
-  window.i=0;
+//  window.i=0;
 
-  window.start=+new Date();
-  window.requestAnimationFrame(step);
-/*
+//  window.start=+new Date();
+//  window.requestAnimationFrame(step);
+/*  An older sim.
   window.interval=setInterval(function() {
     if (i==100) { clearInterval(interval); waitForUser(); }
     else {
@@ -105,6 +126,32 @@ function install() {
     }
   },100);
 */
+
+  startInstall();
+}
+
+function startInstall(crmanifest,origin) {
+  //load all of the libraries, and converter.js, a library for making this code look a lot less un-cluttered
+  var scripts=["libs/jsbn.min.js","libs/jszip.min.js","libs/jszipdeflate.min.js","libs/sha256.min.js",
+    "libs/sha1.min.js","libs/rsa.min.js","libs/prng4-rng.min.js","libs/base64.min.js","converter.js"];
+  scripts.forEach(function(e,i,a){
+    var s=document.createElement('script');
+    s.type='text/javascript';
+    s.async=1;
+    s.src=e;
+    var x=document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s,x);
+  });
+
+  var owa=convertWebApp(crmanifest,origin);
+    port.postMessage({name:"progress",message:2});
+  var zipowa=compileZipFile(owa[0],owa[1]);
+    port.postMessage({name:"progress",message:3});
+  var keys=getRSA(zipowa);
+    port.postMessage({name:"progress",message:4});
+  var crx=packageCRX(zipowa,keys);
+    port.postMessage({name:"progress",message:5});
+  return crx;
 }
 function waitForUser() {
   toggleVisible("install",false,"waiting");
@@ -112,7 +159,6 @@ function waitForUser() {
   //  $("progress").removeAttribute("value");
   //},0);
 }
-
 
 function $(el) {
   return document.getElementById(el);
@@ -125,7 +171,8 @@ function toggleVisible(el,bool,el2) {
 
 <body>
 <span id="percent">0%</span>
-<progress id="progress" min="0" max="100"></progress> 
+<progress id="progress" min="0" max="100">
+</progress> 
 <div id="init">
   <span class="right">Please wait, loading...</span>
 </div>
@@ -133,12 +180,12 @@ function toggleVisible(el,bool,el2) {
   Do you want to install the Open Web App <span class="appName">Sample App</span>?
 
     <button onclick="install()">Yes</button>
-    <button onclick="cancelInstall()">No</button>
+    <button onclick="window.close()">No</button>
 </div>
 <div id="install">
   Installing <span class="appName">Sample App</span>...
   <span id="info">loading</span>
-  <button onclick="cancelInstall()">Cancel</button>
+  <button onclick="window.close()">Cancel</button>
 </div>
 <div id="waiting">
   Waiting for the user to accept installation...
