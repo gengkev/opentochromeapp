@@ -14,4 +14,5 @@ Main things
     * Maybe make this an app itself because we need a way for the user to do this easily and not browser actions.
     * UI, of course!
   * We got installation planned but how about uninstallation and other stuff apps management needs to do?
+  * Right now I just want to get this code written without testing it - you can't test it really since they all depend on each other. That means DEBUGGING!
   * Maybe later we can have some fun with Mozilla's extra planned API's
