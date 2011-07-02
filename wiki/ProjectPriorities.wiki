@@ -1,7 +1,5 @@
 #summary List of current priorities for this project.
 
-<g:plusone></g:plusone>
-
 Main things
 
   * Message passing between places
