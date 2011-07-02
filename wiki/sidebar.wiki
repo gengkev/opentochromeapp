@@ -1,3 +1,5 @@
+#labels hidden
 <g:plusone size="medium"></g:plusone>
 
-* [ProjectHome Project Home]
+* [http://code.google.com/p/opentochromeapp/ Project Home]
+* [http://code.google.com/p/opentochromeapp/w/list Wiki Pages]
