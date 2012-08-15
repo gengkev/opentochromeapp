@@ -1,0 +1,21 @@
+<!doctype html>
+<meta charset="UTF-8" />
+<script src="libs/jspackcrx_include.js"></script>
+<script>
+window.addEventListener("message", function(m_evt) {
+	var base64_zip = m_evt.data.zip;
+	
+	var crx = new JSCrx();
+	crx.addZip(window.atob(base64_zip));
+	
+	crx.generatePrivateKeySignature({exponent:0x10001},function(){
+		crx.generateCrx(function(e){
+			e.target.terminate();
+			
+			m_evt.source.webkitPostMessage({
+				crx: e.target.crx.full
+			}, m_evt.origin, [e.target.crx.full]);
+		});
+	});
+});
+</script>

@@ -1,25 +1,32 @@
 {
-  "name": "Open to Chrome App",
+  "name": "OpenToChromeApp",
   "version": "0.1",
-  "description": "Converts Open Web Apps to Chrome Web Apps in Windows",
-  // "icons": { ... },
+  "description": "An experimental WebRT for Open Web Apps in Google Chrome",
+  "manifest_version": 2,
   "default_locale": "en",
 
-  "background_page": "background.html",
-  //"content_scripts": [ {   // inject open web app stuff
-  //  "matches": ["http://*/*", "https://*/*"],
-  //  "all_frames": true,
-  //  "js": "inject.js",
-  //  "run_at": "document_start"
-  //} ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+//  "content_scripts": [{
+//    "matches": ["<all_urls>"],
+//    "all_frames": true,
+//    "js": "inject.js",
+//    "run_at": "document_start"
+//  }],
   
   "homepage_url": "https://code.google.com/p/opentochromeapp/",
-  // "omnibox": { "keyword" : "app" }, //Omnibox is implemented natively for Chrome Apps though it's slow
-  // "options_page": "options.html", //Later.
+  "options_page": "options.html",
   "permissions": [
     "management",
-    "experimental", //infobar
-    "tabs"
-  ]
-  // "update_url": "http://path/to/updateInfo.xml"
+    "experimental",
+    "fileBrowserHandler",
+    "tabs",
+    "<all_urls>"
+  ],
+  "sandbox": {
+    "pages": ["sandbox.html"]
+  },
+  "update_url": "https://opentochromeapp.googlecode.com/svn/updates.xml"
 }
