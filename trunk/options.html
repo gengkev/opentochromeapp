@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<textarea id="input">
+{
+  "name": "Manifest Checker",
+  "description": "A development tool and demonstration app that helps you check your open web app manifests.",
+  "launch_path": "/",
+  "icons": {
+    "128": "/img/logo_128.png"
+  },
+  "developer": {
+    "name": "Mozilla Labs",
+    "url": "http://mozillalabs.com"
+  }
+}
+</textarea>
+<br />
+<input type="url" id="origin" value="http://appmanifest.org" />
+<button id="submit">Process</button>
+<br />
+<iframe src="sandbox.html" width="0" height="0" id="sandbox"></iframe>
+
+
+<script src="libs/jszip.js"></script>
+<script src="libs/jszipdeflate.js"></script>
+<script src="converter.js"></script>
+<script src="options.js"></script>

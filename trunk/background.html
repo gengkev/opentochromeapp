@@ -1,8 +1,0 @@
-<!DOCTYPE html>
-<meta charset="UTF-8" />
-<!--script type="text/javascript" src="background.js"></script-->
-<script>
-chrome.tabs.getSelected(undefined,function(tab) {
-  chrome.experimental.infobars.show({tabId:tab.id,path:"infobar.html"});
-});
-</script>
