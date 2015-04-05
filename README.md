@@ -1,8 +1,9 @@
 # opentochromeapp
 Automatically exported from code.google.com/p/opentochromeapp
 
-This project has long been defunct. I was in elementary school when I wrote this code, so please don't judge too hard.
-That being said, as of the final commit, it actually somewhat worked! Which was sort of impressive.
+This project has long been defunct, and I wrote it in middle school, so don't judge too hard.
+That being said, the code actually isn't *that* bad, and as of the final commit, it actually somewhat 
+worked! Which was sort of impressive.
 
 Of course, since then, the Open and Chrome web app specifications have changed, and attempting to run this code
 will probably prove futile in any case.
